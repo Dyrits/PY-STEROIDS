@@ -16,3 +16,15 @@ class Player(CircleShape):
 
     def draw(self, screen):
         pygame.draw.polygon(screen, self.color, self.triangle(), 2)
+
+    def rotate(self, delta):
+        self.rotation += delta * PLAYER_TURN_SPEED
+
+    def update(self, delta):
+        keys = pygame.key.get_pressed()
+
+        # Configuration is made for an AZERTY keyboard.
+        if keys[pygame.K_LEFT] or keys[pygame.K_q]:
+            self.rotate(-delta)
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            self.rotate(delta)
