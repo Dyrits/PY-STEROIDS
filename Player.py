@@ -25,6 +25,7 @@ class Player(CircleShape):
     def move(self, delta):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * delta
+        self.wrap()
 
     def update(self, delta):
         if self.cooldown > 0:
@@ -51,3 +52,13 @@ class Player(CircleShape):
         velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
         shot = Shot(self.position.x, self.position.y, velocity)
         self.cooldown = PLAYER_SHOOT_COOLDOWN
+
+    def wrap(self):
+        if self.position.x < 0:
+            self.position.x = SCREEN_WIDTH
+        elif self.position.x > SCREEN_WIDTH:
+            self.position.x = 0
+        if self.position.y < 0:
+            self.position.y = SCREEN_HEIGHT
+        elif self.position.y > SCREEN_HEIGHT:
+            self.position.y = 0

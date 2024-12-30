@@ -3,10 +3,10 @@ import random
 import pygame
 
 from CircleShape import CircleShape
-from constants import ASTEROID_MIN_RADIUS
+from constants import BUBBLE_MIN_RADIUS
 
 
-class Asteroid(CircleShape):
+class Bubble(CircleShape):
     def __init__(self, x, y, radius):
         super().__init__(x, y, radius)
         self.color = "white"
@@ -19,11 +19,11 @@ class Asteroid(CircleShape):
 
     def split(self):
         self.kill()
-        if self.radius == ASTEROID_MIN_RADIUS:
+        if self.radius == BUBBLE_MIN_RADIUS:
             return
         angle = random.uniform(20, 50)
         velocities = [self.velocity.rotate(angle), self.velocity.rotate(-angle)]
-        radius = max(self.radius - ASTEROID_MIN_RADIUS, ASTEROID_MIN_RADIUS)
+        radius = max(self.radius - BUBBLE_MIN_RADIUS, BUBBLE_MIN_RADIUS)
         for velocity in velocities:
-            asteroid = Asteroid(self.position.x, self.position.y, radius)
-            asteroid.velocity = velocity * 1.2
+            bubble = Bubble(self.position.x, self.position.y, radius)
+            bubble.velocity = velocity * 1.2

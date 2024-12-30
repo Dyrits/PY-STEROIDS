@@ -2,8 +2,8 @@ import pygame
 
 from constants import *
 from Player import Player
-from Asteroid import Asteroid
-from AsteroidField import AsteroidField
+from Bubble import Bubble
+from BubbleField import BubbleField
 from Shot import Shot
 
 def main():
@@ -14,16 +14,16 @@ def main():
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
-    asteroids = pygame.sprite.Group()
+    bubbles = pygame.sprite.Group()
     shots = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable)
-    Asteroid.containers = (asteroids, updatable, drawable)
-    AsteroidField.containers = (updatable)
+    Bubble.containers = (bubbles, updatable, drawable)
+    BubbleField.containers = (updatable)
     Shot.containers = (shots, updatable, drawable)
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-    field = AsteroidField()
+    field = BubbleField()
 
     while True:
         for event in pygame.event.get():
@@ -35,13 +35,13 @@ def main():
             entity.draw(screen)
         for entity in updatable:
             entity.update(delta)
-        for asteroid in asteroids:
-            if player.collide(asteroid):
+        for bubble in bubbles:
+            if player.collide(bubble):
                 print("Game Over!")
                 return
             for shot in shots:
-                if asteroid.collide(shot):
-                    asteroid.split()
+                if bubble.collide(shot):
+                    bubble.split()
                     shot.kill()
                     break
         pygame.display.flip()
