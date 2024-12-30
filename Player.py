@@ -1,6 +1,7 @@
 import pygame
 
 from CircleShape import CircleShape
+from Shot import Shot
 from constants import *
 
 class Player(CircleShape):
@@ -8,6 +9,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.color = "white"
+        self.cooldown = 0
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -25,6 +27,10 @@ class Player(CircleShape):
         self.position += forward * PLAYER_SPEED * delta
 
     def update(self, delta):
+        if self.cooldown > 0:
+            self.cooldown -= delta
+            self.cooldown = max(0, self.cooldown)
+
         keys = pygame.key.get_pressed()
 
         # Configuration is made for an AZERTY keyboard.
@@ -37,3 +43,11 @@ class Player(CircleShape):
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             # Move backwards at half speed:
             self.move(-delta / 2)
+        if keys[pygame.K_SPACE]:
+            if self.cooldown == 0:
+                self.shoot()
+
+    def shoot(self):
+        velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+        shot = Shot(self.position.x, self.position.y, velocity)
+        self.cooldown = PLAYER_SHOOT_COOLDOWN
