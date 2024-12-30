@@ -32,6 +32,10 @@ def main():
             entity.draw(screen)
         for entity in updatable:
             entity.update(delta)
+        for asteroid in asteroids:
+            if player.collide(asteroid):
+                print("Game Over!")
+                return
         pygame.display.flip()
         delta = clock.tick(60) / 1000
 
